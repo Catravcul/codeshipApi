@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     minLength: 6,
     select: false, // to hide password field
   },
-  passwrodConfirm: {
+  passwordConfirm: {
     type: String,
     required: [true, 'Please Confirm your password'],
     validate: {
@@ -51,7 +51,7 @@ userSchema.pre('save', async function (next) {
   // Hash the password with cose 12
   this.password = await bcrypt.hash(this.password, 12);
   // delete the confirmPassword field
-  this.passwrodConfirm = undefined;
+  this.passwordConfirm= undefined;
   next();
 });
 
