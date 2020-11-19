@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-var bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide a password'],
     minLength: 6,
+    select: false, // to hide password field
   },
   passwrodConfirm: {
     type: String,
@@ -53,6 +54,12 @@ userSchema.pre('save', async function (next) {
   this.passwrodConfirm = undefined;
   next();
 });
+
+// this is a instance method which we can call from anywhere within our apps
+userSchema.methods.correctPassword =async function (candidatePassword,userPassword) {
+  return await bcrypt.compare(candidatePassword,userPassword);
+}
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
