@@ -4,10 +4,19 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    maxLength: [10, 'A username should not be longer than 10 characters.'],
-    minLength: [4, 'A username should not be less than 4 characters.'],
-    unique: true,
-    require: [true, 'A user should have a unique username.'],
+    maxLength: [15, 'A username should not be longer than 15 characters.'],
+    require: [true, 'A user should have a username.'],
+    unique: [true, 'A user should have a unique username.'],
+  },
+  name: {
+    type: String,
+    maxLength: [12, 'A name should not be longer than 12 characters.'],
+    require: [true, 'A user should have a name.'],
+  },
+  lastname: {
+    type: String,
+    maxLength: [15, 'A lastname should not be longer than 15 characters.'],
+    require: [true, 'A user should have a lastname.'],
   },
   email: {
     type: String,
@@ -32,17 +41,18 @@ const userSchema = new mongoose.Schema({
       message: 'Password are not the same',
     },
   },
-  image: {
-    type: String,
-  },
   description: {
     type: String,
     trim: true,
+    maxLength: [250, 'A user description must be less than 250 characters.']
+  },
+  img_path: {
+    type: String,
   },
   points: {
     type: Number,
     default: 0,
-  },
+  }
 });
 // middleware hook
 userSchema.pre('save', async function (next) {

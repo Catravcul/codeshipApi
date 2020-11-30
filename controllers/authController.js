@@ -9,9 +9,12 @@ exports.signup = async (req, res, next) => {
   try {
     const newUser = await User.create({
       username: req.body.username,
+      name: req.body.name,
+      lastname: req.body.lastname,
       email: req.body.email,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
+      description: req.body.description
     });
     const token = signToken(newUser._id);
 
