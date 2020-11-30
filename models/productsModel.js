@@ -6,7 +6,13 @@ const productsSchema = new mongoose.Schema({
     required: [true, 'A product must have a title.'],
     trim: true,
     maxLength: [40, 'A product title must be less than 40 characters.'],
-    minLength: [10, 'A product title must be greater than 40 characters.'],
+    minLength: [5, 'A product title must be greater than 5 characters.'],
+  },
+  type: {
+    type: String,
+    trim: true,
+    maxLength: [25, 'A product must have a valid type'],
+    required: [true, 'A product must have a type.']
   },
   description: {
     type: String,
@@ -21,13 +27,18 @@ const productsSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'A product must have a price.'],
   },
-  image: {
+  img_path: {
     type: String,
+    unique: [true, 'A product must have a unique image']
+  },
+  file_path: {
+    type: String,
+    required: [true, 'A product must have a file path'],
+    unique: [true, 'A product must have an unique file']
   },
   createdAt: {
     type: Date,
-    default: Date.now(),
-    // select: false,
+    default: Date.now()
   },
 });
 
