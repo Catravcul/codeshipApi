@@ -4,18 +4,18 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    maxLength: [15, 'A username should not be longer than 15 characters.'],
+    maxlength: [15, 'A username should not be longer than 15 characters.'],
     require: [true, 'A user should have a username.'],
     unique: [true, 'A user should have a unique username.'],
   },
   name: {
     type: String,
-    maxLength: [12, 'A name should not be longer than 12 characters.'],
+    maxlength: [12, 'A name should not be longer than 12 characters.'],
     require: [true, 'A user should have a name.'],
   },
   lastname: {
     type: String,
-    maxLength: [15, 'A lastname should not be longer than 15 characters.'],
+    maxlength: [15, 'A lastname should not be longer than 15 characters.'],
     require: [true, 'A user should have a lastname.'],
   },
   email: {
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please provide a password'],
-    minLength: 6,
+    minlength: 6,
     select: false, // to hide password field
   },
   passwordConfirm: {
@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
   description: {
     type: String,
     trim: true,
-    maxLength: [250, 'A user description must be less than 250 characters.']
+    maxlength: [250, 'A user description must be less than 250 characters.']
   },
   img_path: {
     type: String,
