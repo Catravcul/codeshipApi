@@ -7,15 +7,7 @@ const signToken = (id) => {
 };
 exports.signup = async (req, res, next) => {
   try {
-    const newUser = await User.create({
-      username: req.body.username,
-      name: req.body.name,
-      lastname: req.body.lastname,
-      email: req.body.email,
-      password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm,
-      description: req.body.description
-    });
+    const newUser = await User.create(req.body);
     const token = signToken(newUser._id);
 
     res.status(201).json({
@@ -35,20 +27,20 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    //   1) Checkif email and email exists
-    if (!email || !password) {
+    const { username, password } = req.body;
+    //   1) Checkif username and username exists
+    if (!username || !password) {
       return res.status(400).json({
         status: 'error',
-        message: 'Your email and password do not match',
+        message: 'Your username and password do not match',
       });
     }
     // 2) Check if user exists && password is correct
-    const user = await User.findOne({email }).select('+password');
+    const user = await User.findOne({username }).select('+password');
     if (!user || !(await user.correctPassword(password, user.password))) {
       return res.status(401).json({
         status: 'error',
-        message: 'Incorrect email or password',
+        message: 'Incorrect username or password',
       });
     }
     // 3) If everything is correct ,send token to client
