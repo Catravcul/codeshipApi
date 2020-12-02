@@ -5,8 +5,7 @@ const productsSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A product must have a title.'],
     trim: true,
-    maxlength: [40, 'A product title must be less than 40 characters.'],
-    minlength: [5, 'A product title must be greater than 5 characters.'],
+    maxlength: [40, 'A product title must be less than 40 characters.']
   },
   type: {
     type: String,
@@ -17,11 +16,7 @@ const productsSchema = new mongoose.Schema({
   description: {
     type: String,
     trim: true,
-    maxlength: [250, 'A product description must be less than 250 characters.'],
-    minlength: [
-      50,
-      'A product description must be greater than 50 characters.',
-    ],
+    maxlength: [250, 'A product description must be less than 250 characters.']
   },
   price: {
     type: Number,
