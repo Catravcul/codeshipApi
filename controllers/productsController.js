@@ -17,7 +17,10 @@ exports.getAllProducts = async (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
+    const img_path = 'public/img/product/' + Date.now() + req.files.img.name;
+    req.body.img_path = img_path;
     const newProduct = await Products.create(req.body);
+    req.files.img.mv(img_path, err => console.log(err));
     return res.status(200).json({
       status: 'success',
       data: { product: newProduct },
