@@ -7,6 +7,10 @@ const spaceshipRoute = require('./routes/spaceshipRoute');
 const userProductRoute = require('./routes/userProductRoute');
 const app = express();
 
+const cors = require('cors');
+require('dotenv').config();
+app.use(cors({ origin: 'http://localhost:' + process.env.PORT}));
+
 app.use(express.json());
 app.use(express_fileupload({
   useTempFiles: true,
