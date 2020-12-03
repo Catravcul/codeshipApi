@@ -1,6 +1,5 @@
 const express = require('express');
 const morgan = require('morgan');
-var cors = require('cors');
 const express_fileupload = require('express-fileupload')
 const userRoute = require('./routes/userRoute');
 const productRoute = require('./routes/productRoute');
@@ -17,7 +16,6 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 app.use(express.static(`${__dirname}/public`));
-app.use(cors({ origin: 'http://localhost:5000' }));
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
