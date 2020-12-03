@@ -9,7 +9,8 @@ const app = express();
 
 const cors = require('cors');
 require('dotenv').config();
-app.use(cors({ origin: 'http://localhost:' + process.env.PORT}));
+console.log(process.env.PORT)
+app.use(cors({ origin: 'http://localhost:' + process.env.PORT || 5000}));
 
 app.use(express.json());
 app.use(express_fileupload({
