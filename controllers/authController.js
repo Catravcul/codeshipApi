@@ -7,10 +7,16 @@ const signToken = (id) => {
 };
 exports.signup = async (req, res, next) => {
   try {
-    const img_path = 'public/img/user/' + Date.now() + req.files.img.name;
-    req.body.img_path = img_path;
-    const newUser = await User.create(req.body);
-    req.files.img.mv(img_path, err => console.log(err));
+    let newUser;
+    if(req.files) {
+      const img_path = 'img/user/' + Date.now() + req.files.img.name;
+      req.body.img_path = img_path;
+      newUser = await User.create(req.body);
+      req.files.img.mv(img_path, err => console.log(err));
+    }else {
+      req.body.img_path = 'img/user/profile.jpg';
+      newUser = await User.create(req.body);
+    }
     const token = signToken(newUser._id);
 
     res.status(201).json({
