@@ -5,6 +5,7 @@ const router = express.Router()
 router
   .route('/')
   .post(CommentController.store)
+  .delete(CommentController.destroy)
 router.route('/:id')
 .get(CommentController.showProduct)
 
