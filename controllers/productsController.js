@@ -20,7 +20,7 @@ exports.createProduct = async (req, res, next) => {
     const img_path = 'img/product/' + Date.now() + req.files.img.name;
     req.body.img_path = img_path;
     const newProduct = await Products.create(req.body);
-    req.files.img.mv(img_path, err => console.log(err));
+    req.files.img.mv('public/' + img_path, err => console.log(err));
     return res.status(200).json({
       status: 'success',
       data: { product: newProduct },
