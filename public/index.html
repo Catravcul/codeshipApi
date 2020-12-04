@@ -4,32 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        * {
+            background-color: rgb(20, 20, 20);
+            color:rgb(160, 160, 160)
+        }
+    </style>
 </head>
 <body>
-    <form action="product" method="POST" enctype="multipart/form-data">
+    <form  id="form-product" action="product" method="POST" enctype="multipart/form-data">
         <fieldset>  
-            <legend>New product</legend>  
-            <input type="file" placeholder="img" name="img">
-            <input type="text" placeholder="title" name="title">
-            <input type="text" placeholder="description" name="description">
-            <input type="text" placeholder="price" name="price">
-            <input type="text" placeholder="type" name="type">
-            <input type="text" placeholder="file_path" name="file_path">
-            <input type="submit" value="submit">
+            <legend>New product</legend>
+            <fieldset>
+                <input id="product-img" type="file" placeholder="img" name="img">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input id="product-title" type="text" placeholder="title" name="title">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input id="product-description" type="text" placeholder="description" name="description">
+                <label fro="product-description">0</label>
+            </fieldset>
+            <fieldset>
+                <input id="product-price" type="text" placeholder="price" name="price">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input id="product-type" type="text" placeholder="type" name="type">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input id="product-file_path" type="text" placeholder="file_path" name="file_path">
+                <label for=""></label>
+            </fieldset>
+            <input id="product-submit" type="submit" value="submit">
         </fieldset>
     </form>
     
-    <form action="user/signup" method="POST" enctype="multipart/form-data">
+    <form  id="form-user" action="user/signup" method="POST" enctype="multipart/form-data">
         <fieldset>
             <legend>New user</legend>
-            <input type="file" placeholder="img" name="img">
-            <input type="text" placeholder="username" name="username">
-            <input type="text" placeholder="description" name="description">
-            <input type="text" placeholder="lastname" name="lastname">
-            <input type="text" placeholder="name" name="name">
-            <input type="email" placeholder="email" name="email">
-            <input type="password" placeholder="password" name="password">
-            <input type="password" placeholder="passwordConfirm" name="passwordConfirm">
+            <fieldset>
+                <input type="file" placeholder="img" name="img">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="text" placeholder="username" name="username">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="text" placeholder="description" name="description">
+                <label for="description"></label>
+            </fieldset>
+            <fieldset>
+                <input type="text" placeholder="lastname" name="lastname">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="text" placeholder="name" name="name">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="email" placeholder="email" name="email">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="password" placeholder="password" name="password">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="password" placeholder="passwordConfirm" name="passwordConfirm">
+                <label for=""></label>
+            </fieldset>
             <input type="submit" value="submit">
         </fieldset>
     </form>
@@ -45,25 +93,34 @@
     Image by <a href="https://pixabay.com/users/sloozeberry-1575786/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1011450">Neill McLaughlin</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1011450">Pixabay</a>
 
     <script>
+        //-----------------------BUTTONS----------------------------
         document.getElementById('rmv-products').addEventListener('click', () => {
             fetch('http://127.0.0.1:5000/spaceship', {method:'DELETE'}).then(res => res.json)
-            .then(response => console.log(response.data))
+            .then(response => console.log(response))
         })
         document.getElementById('rmv-products').addEventListener('click', () => {
             fetch('http://127.0.0.1:5000/product', {method:'DELETE'}).then(res => res.json)
-            .then(response => console.log(response.data))
+            .then(response => console.log(response))
         })
         document.getElementById('rmv-products').addEventListener('click', () => {
             fetch('http://127.0.0.1:5000/user', {method:'DELETE'}).then(res => res.json)
-            .then(response => console.log(response.data))
+            .then(response => console.log(response))
         })
         document.getElementById('rmv-products').addEventListener('click', () => {
             fetch('http://127.0.0.1:5000/userProduct', {method:'DELETE'}).then(res => res.json)
-            .then(response => console.log(response.data))
+            .then(response => console.log(response))
         })
         document.getElementById('rmv-products').addEventListener('click', () => {
             fetch('http://127.0.0.1:5000/comment', {method:'DELETE'}).then(res => res.json)
-            .then(response => console.log(response.data))
+            .then(response => console.log(response))
+        })
+    </script>
+
+    <script>
+        //----------------------------FORMS------------------------------------
+        document.getElementById('product-description').addEventListener('input', (e) => {
+            const {parentElement, value} = e.currentTarget
+            parentElement.children[1].textContent = value.length
         })
     </script>
 </body>
