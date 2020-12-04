@@ -84,3 +84,21 @@ exports.updateProduct = async (req, res, next) => {
         });
       }
  }
+
+ exports.destroy = async (req, res, next) => {
+  let result;
+  try{
+    result = await Products.remove({}, err => {
+      return err
+    })
+    res.status(200).json({
+      status: 'OK',
+      data: {result: result},
+    })
+  } catch(err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    })
+  }
+}
