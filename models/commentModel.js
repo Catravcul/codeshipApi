@@ -30,5 +30,5 @@ const commentSchema = new mongoose.Schema({
   }
 });
 
-const Comment = mongoose.model('Spaceship', commentSchema);
+const Comment = mongoose.model('Comment', commentSchema);
 module.exports = Comment;
