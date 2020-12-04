@@ -5,6 +5,7 @@ const userRoute = require('./routes/userRoute');
 const productRoute = require('./routes/productRoute');
 const spaceshipRoute = require('./routes/spaceshipRoute');
 const userProductRoute = require('./routes/userProductRoute');
+const commentRoute = require('./routes/commentRoute');
 const app = express();
 
 const cors = require('cors');
@@ -30,6 +31,7 @@ app.use('/product', productRoute);
 app.use('/user', userRoute);
 app.use('/spaceship', spaceshipRoute);
 app.use('/userProduct', userProductRoute);
+app.use('/comment', commentRoute);
 app.all('*', (req, res, next) => {
   res.status(404).json({
     status: 'fail',
