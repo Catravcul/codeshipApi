@@ -7,4 +7,7 @@ router.post('/signup', authController.signup);
 // http://127.0.0.1:5000/user/login   (login routes)
 router.post('/auth/login', authController.login);
 
+router.route('/')
+.delete(authController.destroy)
+
 module.exports = router;
