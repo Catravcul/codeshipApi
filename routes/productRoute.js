@@ -1,15 +1,22 @@
-const express = require('express');
-const productsController = require('./../controllers/productsController');
-const router = express.Router();
+const express = require('express')
+const {store, destroy, show, update, index, drop} = require('../controllers/productController')
+const route = express.Router()
+const publicRoute = express.Router()
 
-router
+publicRoute.get('/', index )
+
+publicRoute.get('/:id', show)
+  
+route
   .route('/')
-  .post(productsController.createProduct)
-  .get(productsController.getAllProducts)
-  .delete(productsController.destroy)
-router.route('/:id')
-.get(productsController.getProductById)
-.patch(productsController.updateProduct)
-.delete(productsController.deleteProduct)
+  .put( store )
+  .delete( drop )
+route
+  .route('/:id')
+  .patch( update )
+  .delete( destroy )
 
-module.exports = router;
+module.exports = {
+  productRoute: route,
+  productPublicRoute: publicRoute
+}
