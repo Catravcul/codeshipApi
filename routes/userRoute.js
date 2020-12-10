@@ -1,13 +1,22 @@
-const express = require('express');
-const authController = require('./../controllers/authController');
-const router = express.Router();
+const express = require('express')
+const {login, signup, index, update, drop, show} = require('../controllers/userController')
+const route = express.Router()
+const publicRoute = express.Router()
 
-// http://127.0.0.1:5000/user/signup (signup routes)
-router.post('/signup', authController.signup);
-// http://127.0.0.1:5000/user/login   (login routes)
-router.post('/auth/login', authController.login);
+publicRoute.get('/:id', show)
 
-router.route('/')
-.delete(authController.destroy)
+publicRoute.route('/')
+.put( signup )
+.post( login )
 
-module.exports = router;
+route.patch('/:id', update)
+
+route.route('/')
+.get( index )
+.patch( update )
+.delete( drop )
+
+module.exports = {
+    userRoute: route,
+    userPublicRoute: publicRoute
+}
