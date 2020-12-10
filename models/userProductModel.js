@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const UserModel = require('./userModel')
-const ProductModel = require('./productsModel')
+const ProductModel = require('./productModel')
 
 const userProductSchema = new mongoose.Schema({
   owner: {

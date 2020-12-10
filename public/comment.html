@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+    <form id="get-product">
+        <legend>Get product</legend>
+        <fieldset><input id="product-id" type="text" name="productId"/></fieldset>
+        <input type="submit"/>
+    </form>
+    <section id="comments"></section>
+    <article>
+        <img id="product-img"/>
+        <h1 id="product-title"></h1>
+        <p id="product-description"></p>
+        <textarea id="new-comment"></textarea>
+        <button id="put-comment" data-id="">Comment</button>
+    </article>
+    <script>
+        const token = sessionStorage.getItem('codeship-token')
+        const getProduct = document.getElementById('get-product')
+        const putPost = document.getElementById('put-comment')
+        getProduct.addEventListener('submit', e => {
+            e.preventDefault()
+            const productId = document.getElementById('product-id').value
+            fetch('/public/comment/', {
+                method: 'POST',
+                body: JSON.stringify({product: productId}),
+                headers: {'x-access-token': token}
+            })
+            .then(response => response.text())
+            .then(res => document.getElementById('comments').append(document.createElement('p').textContent = res))
+            fetch('/public/product/' + productId, {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(res => {
+                if(res.data){
+                    putPost.setAttribute('data-id', res.data._id)
+                    document.getElementById('product-img').style.backgroundImage = 'url("http://127.0.0.1:5000/' + res.data.img_path + '"'
+                    document.getElementById('product-title').textContent = res.data.title
+                    document.getElementById('product-description').textContent = res.data.description
+                    console.log(res.data)
+                } else {
+                    alert(res.message)
+                }
+            })
+        })
+        putPost.addEventListener('click', e => {
+            const body = {
+                comment: document.getElementById('new-comment').value,
+                product: e.currentTarget.getAttribute('data-id')
+            }
+            fetch('/comment/', {
+                method: 'PUT',
+                body: JSON.stringify(body),
+                headers: {'x-access-token': token, 'Content-Type': 'application/json'}})
+        })
+    </script>
+</body>
+</html>

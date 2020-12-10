@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <form id="login-form">
+        <fieldset>
+            <legend>Login</legend>
+            <fieldset>
+                <input id="username" type="text" name="username" placeholder="username" />
+                <label for="username"></label>
+            </fieldset>
+            
+            <fieldset>
+                <input id="password" type="password" name="password" placeholder="password" />
+                <label for="password"></label>
+            </fieldset>
+        </fieldset>
+        <input type="submit" value="submit"/>
+    </form>
+    <textarea id="response"></textarea>
+    <form id="get-index-form" action="/server" method="POST">
+        <input id="codeship-token" type="hidden" name="token"></form>
+    <script>
+        let token = sessionStorage.getItem('codeship-token')
+        document.getElementById('codeship-token').value = token
+        const loginForm = document.getElementById('login-form')
+        loginForm.addEventListener('submit', e => {
+            e.preventDefault()
+            const body = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value
+            }
+            fetch('/public/user', {
+                method: 'POST', 
+                body: JSON.stringify(body),
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(response => response.json()).then(res => {
+                if(res.data){
+                    sessionStorage.setItem('codeship-token', res.data.token)
+                    token = res.data.token
+                    showIndex()
+                } else {
+                    document.getElementById('response').textContent = res.message
+                }
+            })
+        })
+        showIndex()
+        function showIndex() {
+            const body = {token: token}
+            fetch('/test/token', {
+                method: 'POST', 
+                body: JSON.stringify(body), 
+                headers:{'Content-Type': 'application/json'}})
+            .then( res => res.json() ).then( ({data}) => { 
+                if (data.validToken == true) {
+                    document.getElementById('get-index-form').submit()
+                }
+            })
+        }
+    </script>
+</body>
+</html>

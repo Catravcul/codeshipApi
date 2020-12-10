@@ -1,12 +1,23 @@
 const express = require('express')
-const CommentController = require('./../controllers/commentController')
-const router = express.Router()
+const {store, drop, showAll, update, destroy} = require('./../controllers/commentController')
+const route = express.Router()
+const publicRoute = express.Router()
 
-router
+publicRoute
   .route('/')
-  .post(CommentController.store)
-  .delete(CommentController.destroy)
-router.route('/:id')
-.get(CommentController.showProduct)
+  .post( showAll )
 
-module.exports = router
+route
+  .route('/')
+  .put( store )
+  .delete( drop )
+
+route
+  .route('/:productId')
+  .delete( destroy )
+  .patch( update )
+
+module.exports = {
+  commentRoute: route,
+  commentPublicRoute: publicRoute
+}

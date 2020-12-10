@@ -1,0 +1,10 @@
+* {
+    background-color: rgb(20, 20, 20);
+    color:rgb(160, 160, 160)
+}
+img {
+    background-size: cover;
+    width: 50vw;
+    height: 40vw;
+    margin: 0 25%;
+}
