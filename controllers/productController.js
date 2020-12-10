@@ -1,7 +1,7 @@
-const Products = require('./../models/productsModel');
-exports.getAllProducts = async (req, res, next) => {
+const Product = require('../models/productModel');
+exports.index = async (req, res, next) => {
   try {
-    const products = await Products.find();
+    const products = await Product.find();
     return res.status(200).json({
       status: 'OK',
       data: { products: products },
@@ -15,11 +15,11 @@ exports.getAllProducts = async (req, res, next) => {
   }
 };
 
-exports.createProduct = async (req, res, next) => {
+exports.store = async (req, res, next) => {
   try {
     const img_path = 'img/product/' + Date.now() + req.files.img.name;
     req.body.img_path = img_path;
-    const newProduct = await Products.create(req.body);
+    const newProduct = await Product.create(req.body);
     req.files.img.mv('public/' + img_path, err => console.log(err));
     return res.status(200).json({
       status: 'success',
@@ -34,9 +34,9 @@ exports.createProduct = async (req, res, next) => {
 
   next();
 };
-exports.getProductById = async (req, res, next) => {
+exports.show = async (req, res, next) => {
   try {
-    const product = await Products.findById(req.params.id);
+    const product = await Product.findById(req.params.id);
     return res.status(200).json({
       status: 'OK',
       data: product,
@@ -49,9 +49,9 @@ exports.getProductById = async (req, res, next) => {
   }
 };
 
-exports.updateProduct = async (req, res, next) => {
+exports.update = async (req, res, next) => {
   try {
-    const updateProduct = await Products.findByIdAndUpdate(
+    const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       req.body,
       {
@@ -61,7 +61,7 @@ exports.updateProduct = async (req, res, next) => {
     );
     res.status(200).json({
       status: 'OK',
-      data: updateProduct,
+      data: updatedProduct,
     });
   } catch (err) {
     res.status(400).json({
@@ -70,12 +70,12 @@ exports.updateProduct = async (req, res, next) => {
     });
   }
 };
- exports.deleteProduct= async (req, res, next) => {
+ exports.destroy= async (req, res, next) => {
      try{
-         const product = await Products.findByIdAndDelete(req.params.id);
+         const result = await Product.findByIdAndDelete(req.params.id);
          res.status(204).json({
              status: 'deleted',
-             data:null,
+             data: {result: result},
          })
      }catch (err) {
         res.status(500).json({
@@ -85,10 +85,10 @@ exports.updateProduct = async (req, res, next) => {
       }
  }
 
- exports.destroy = async (req, res, next) => {
+ exports.drop = async (req, res, next) => {
   let result;
   try{
-    result = await Products.remove({}, err => {
+    result = await Product.remove({}, err => {
       return err
     })
     res.status(200).json({
