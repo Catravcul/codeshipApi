@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const UserModel = require('./userModel')
-const CommentModel = require('./commentModel')
+const ProductModel = require('./productModel')
 
 const commentSchema = new mongoose.Schema({
   owner: {
@@ -18,7 +18,7 @@ const commentSchema = new mongoose.Schema({
     required: [true, 'A comment must have a product'],
     validate: {
       validator: (id) => {
-        return CommentModel.findById(id)
+        return ProductModel.findById(id)
       },
       message: 'Please enter a valid id'
     }
