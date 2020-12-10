@@ -33,7 +33,7 @@ exports.store = async (req, res, next) => {
   next()
 }
 
-exports.destroy = async (req, res, next) => {
+exports.drop = async (req, res, next) => {
   let result;
   try{
     result = await UserProduct.remove({}, err => {
