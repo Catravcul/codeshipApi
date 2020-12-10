@@ -1,13 +1,20 @@
 const express = require('express')
-const SpaceshipController = require('./../controllers/spaceshipController')
+const {store, drop, show, update} = require('./../controllers/spaceshipController')
 const router = express.Router()
+const publicRouter = express.Router()
+
+publicRouter.get('/:userId', show)
 
 router
   .route('/')
-  .post(SpaceshipController.store)
-  .delete(SpaceshipController.destroy)
-router.route('/:id')
-.get(SpaceshipController.show)
-.patch(SpaceshipController.update)
+  .put( store )
+  .delete( drop )
+  .patch( update )
+router
+  .route('/:userId')
+  .patch( update )
 
-module.exports = router
+module.exports = {
+  spaceshipRoute: router,
+  spaceshipPublicRoute: publicRouter
+}
