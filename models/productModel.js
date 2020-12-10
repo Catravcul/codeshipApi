@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const productsSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, 'A product must have a title.'],
@@ -24,7 +24,8 @@ const productsSchema = new mongoose.Schema({
   },
   img_path: {
     type: String,
-    unique: [true, 'A product must have a unique image']
+    unique: [true, 'A product must have a unique image'],
+    required: [true, 'A product require an image']
   },
   file_path: {
     type: String,
@@ -37,5 +38,5 @@ const productsSchema = new mongoose.Schema({
   },
 });
 
-const Products = mongoose.model('Products', productsSchema);
-module.exports = Products;
+const Product = mongoose.model('Product', productSchema);
+module.exports = Product;
