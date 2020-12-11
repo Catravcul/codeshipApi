@@ -22,13 +22,20 @@ publicRouter
     .post((req, res, next) => {
         res.sendFile(process.cwd() + '/public/index.html')
     })
-publicRouter
+    publicRouter
     .route('/comment')
     .post((req, res, next) => {
         res.sendFile(process.cwd() + '/public/comment.html')
     })
-
-module.exports = {
-    serverRoute: router,
-    serverPublicRoute: publicRouter
-}
+    
+    publicRouter
+        .route('/user')
+        .post((req, res, next) => {
+            res.sendFile(process.cwd() + '/public/signup.html')
+        })
+    
+    
+    module.exports = {
+        serverRoute: router,
+        serverPublicRoute: publicRouter
+    }
