@@ -92,7 +92,7 @@ exports.login = async (req, res, next) => {
 
 exports.show = async (req, res, next) => {
   try{
-    const user = await User.findOne({username: req.params.id})
+    const user = await User.findById(req.params.id)
     res.status(200).json({
       status: 'OK',
       data: {
