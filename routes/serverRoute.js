@@ -3,17 +3,20 @@ const router = express.Router()
 const publicRouter = express.Router()
 
 
-publicRouter
-    .route('/')
-    .get((req, res, next) => {
-        res.sendFile(process.cwd() + '/public/login.html')
-    })
+publicRouter.get('/login',(req, res) => {
+    
+    res.sendFile(process.cwd() + '/public/login.html')
+})
+publicRouter.get('/signup', (req, res) => {
+    
+    res.sendFile(process.cwd() + '/public/signup.html')
+})
 
 publicRouter.use((req, res, next) => {
     if (req.body.serverId) {
         next()
     } else {
-        res.redirect('/')
+        res.redirect('/server/login')
     }
 })
 
@@ -31,7 +34,7 @@ publicRouter
     publicRouter
         .route('/user')
         .post((req, res, next) => {
-            res.sendFile(process.cwd() + '/public/signup.html')
+            res.sendFile(process.cwd() + '/public/user.html')
         })
     
     

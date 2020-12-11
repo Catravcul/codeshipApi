@@ -4,16 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
-    <h1>users</h1>
-    <p id="users"></p>
+    <form  id="form-user" >
+        <fieldset>
+            <legend>New user</legend>
+            <fieldset>
+                <input type="file" placeholder="img" name="img">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="text" placeholder="username" name="username">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="text" placeholder="description" name="description">
+                <label for="description"></label>
+            </fieldset>
+            <fieldset>
+                <input type="text" placeholder="lastname" name="lastname">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="text" placeholder="name" name="name">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="email" placeholder="email" name="email">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="password" placeholder="password" name="password">
+                <label for=""></label>
+            </fieldset>
+            <fieldset>
+                <input type="password" placeholder="passwordConfirm" name="passwordConfirm">
+                <label for=""></label>
+            </fieldset>
+            <input type="submit" value="submit">
+        </fieldset>
+    </form>
+
+
     <script>
         const token = sessionStorage.getItem('codeship-token')
-        console.log(token)
-        fetch('/user/', {method:'GET', headers: {'x-access-token': token}})
-        .then(res => res.json()).then( res => document.getElementById('users').textContent = JSON.stringify(res))
+        const userForm = document.getElementById('form-user')
+        userForm.addEventListener('submit', e => {
+            e.preventDefault()
+            const body = new FormData(userForm)
+            fetch('/public/user', {
+                method: 'PUT', 
+                body: body,
+                headers: {'x-access-token': token}
+            })
+        })
     </script>
 </body>
 </html>
