@@ -9,11 +9,67 @@
 <body>
     <h1>users</h1>
     <p id="users"></p>
+
+    <!-------------------------------USER UPDATE--------------------------------->
+    
+    <input id="user-id" type="text" placeholder="user id">
+    <label for="user-id">Enter here the id of the user, or login to update</label>
+    <form id="update">
+        <fieldset>
+            <legend>New user</legend>
+            <fieldset>
+                <input id="img" type="file" placeholder="img" name="img">
+                <label for="img"></label>
+            </fieldset>
+            <fieldset>
+                <input id="username" type="text" placeholder="username" name="username">
+                <label for="username"></label>
+            </fieldset>
+            <fieldset>
+                <input id="description" type="text" placeholder="description" name="description">
+                <label for="description"></label>
+            </fieldset>
+            <fieldset>
+                <input id="lastname" type="text" placeholder="lastname" name="lastname">
+                <label for="lastname"></label>
+            </fieldset>
+            <fieldset>
+                <input id="name" type="text" placeholder="name" name="name">
+                <label for="name"></label>
+            </fieldset>
+            <fieldset>
+                <input id="email" type="email" placeholder="email" name="email">
+                <label for="email"></label>
+            </fieldset>
+            <input type="submit" value="submit">
+        </fieldset>
+    </form>
+    <code id="updated"></code>
     <script>
         const token = sessionStorage.getItem('codeship-token')
         console.log(token)
         fetch('/user/', {method:'GET', headers: {'x-access-token': token}})
         .then(res => res.json()).then( res => document.getElementById('users').textContent = JSON.stringify(res))
+
+        //--------------------------------UPDATE-----------------------------------
+
+        const update = document.getElementById('update')
+        const updated = document.getElementById('updated')
+
+        update.addEventListener('submit', e => {
+            e.preventDefault()
+            const user_id = document.getElementById('user-id').value
+            const url = user_id ? '/user/' + user_id : '/user/'
+            const body = new FormData(update)
+            fetch(url, {
+                method: 'PATCH',
+                body: body,
+                headers: {
+                    "x-access-token": token
+                }
+            }).then( res => res.json() )
+            .then( data => updated.textContent = JSON.stringify(data) )
+        })
     </script>
 </body>
 </html>
