@@ -9,7 +9,10 @@
     <nav>
         <fieldset>
             <legend>Navigation</legend>
-            <button id="user">Update user</button>
+            <form id="user" action="/server/user" method="POST">
+                <input class="codeship-token" type="hidden" name="token"/>
+                <input type="submit" value="user"/>
+            </form>
             <button id="spaceship">Update spaceship</button>
             <form id="comment" action="/server/comment" method="POST">
                 <input class="codeship-token" type="hidden" name="token"/>
