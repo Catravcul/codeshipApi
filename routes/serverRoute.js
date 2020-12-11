@@ -4,12 +4,10 @@ const publicRouter = express.Router()
 
 
 publicRouter.get('/login',(req, res) => {
-    
-    res.sendFile(process.cwd() + '/public/login.html')
+    res.sendFile(process.cwd() + '/server/login.html')
 })
 publicRouter.get('/signup', (req, res) => {
-    
-    res.sendFile(process.cwd() + '/public/signup.html')
+    res.sendFile(process.cwd() + '/server/signup.html')
 })
 
 publicRouter.use((req, res, next) => {
@@ -23,18 +21,18 @@ publicRouter.use((req, res, next) => {
 publicRouter
     .route('/')
     .post((req, res, next) => {
-        res.sendFile(process.cwd() + '/public/index.html')
+        res.sendFile(process.cwd() + '/server/index.html')
     })
     publicRouter
     .route('/comment')
     .post((req, res, next) => {
-        res.sendFile(process.cwd() + '/public/comment.html')
+        res.sendFile(process.cwd() + '/server/comment.html')
     })
     
     publicRouter
         .route('/user')
         .post((req, res, next) => {
-            res.sendFile(process.cwd() + '/public/user.html')
+            res.sendFile(process.cwd() + '/server/user.html')
         })
     
     
