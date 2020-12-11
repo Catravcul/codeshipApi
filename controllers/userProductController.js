@@ -2,7 +2,7 @@ const UserProduct = require('../models/userProductModel');
 
 exports.show = async (req, res, next) => {
     try {
-      const products = await UserProduct.find({owner: req.body.id})
+      const products = await UserProduct.find({owner: req.params.userId})
       return res.status(200).json({
         status: 'OK',
         data: { products: products },
@@ -18,6 +18,7 @@ exports.show = async (req, res, next) => {
     
 exports.store = async (req, res, next) => {
   try {
+    req.body.owner = req.id
     const newProduct = await UserProduct.create(req.body)
     return res.status(200).json({
       status: 'success',
