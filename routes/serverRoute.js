@@ -23,20 +23,20 @@ publicRouter
     .post((req, res, next) => {
         res.sendFile(process.cwd() + '/server/index.html')
     })
-    publicRouter
-    .route('/comment')
-    .post((req, res, next) => {
+publicRouter.post('/comment', (req, res) => {
         res.sendFile(process.cwd() + '/server/comment.html')
     })
     
-    publicRouter
-        .route('/user')
-        .post((req, res, next) => {
-            res.sendFile(process.cwd() + '/server/user.html')
-        })
+publicRouter.post('/user', (req, res) => {
+        res.sendFile(process.cwd() + '/server/user.html')
+    })
+
+publicRouter.post('/spaceship', (req, res) => {
+    res.sendFile(process.cwd() + '/server/spaceship.html')
+})
     
     
-    module.exports = {
-        serverRoute: router,
-        serverPublicRoute: publicRouter
-    }
+module.exports = {
+    serverRoute: router,
+    serverPublicRoute: publicRouter
+}
