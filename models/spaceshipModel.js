@@ -28,6 +28,11 @@ const spaceshipSchema = new mongoose.Schema({
     trim: true,
     maxlength: [300, 'A goal explanation must be less than 300 characters.']
   },
+  goal_reason: {
+    type: String,
+    trim: true,
+    maxlength: [500, 'A goal reason must be less than 300 characters.']
+  },
   config_path: {
     type: String,
     required: [true, 'A spaceship must have a config file path'],
