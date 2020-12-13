@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/style/style.css">
+</head>
+<body>
+    <h1>Spaceship</h1>
+    <form id="create">
+        <legend>Create</legend>
+        <input name="name" type="text" placeholder="name">
+        <input name="goal" type="text" placeholder="goal">
+        <input name="goal_explanation" type="text" placeholder="goal_explanation">
+        <input name="goal_reason" type="text" placeholder="goal_reason">
+        <input type="submit" value="submit">
+    </form>
+    <form id="update">
+        <legend>Update</legend>
+        <input name="name" type="text" placeholder="name">
+        <input name="goal" type="text" placeholder="goal">
+        <input name="goal_explanation" type="text" placeholder="goal_explanation">
+        <input name="goal_reason" type="text" placeholder="goal_reason">
+        <input type="submit" value="submit">
+    </form>
+    <div id="spaceships">
+
+    </div>
+    <script>
+        const token = sessionStorage.getItem('codeship-token')
+        console.log(token)
+        document.getElementById('create').addEventListener('submit', e => {
+            e.preventDefault()
+            const body = new FormData(e.currentTarget)
+            fetch('/spaceship', {method: 'PUT', body: body, headers: {
+                'x-access-token': token
+            }}).then(res => res.json()).then(res => console.log(res))
+        })
+        document.getElementById('update').addEventListener('submit', e => {
+            e.preventDefault()
+            const body = new FormData(e.currentTarget)
+            fetch('/spaceship', {method: 'PATCH', body: body, headers: {
+                'x-access-token': token
+            }}).then(res => res.json()).then(res => console.log(res))
+        })
+        fetch('/spaceship', {method: 'GET', headers: {'x-access-token': token}})
+        .then(res => res.json())
+        .then(({data:{spaceships}}) => {
+            const container = document.getElementById('spaceships')
+            const element = document.createElement('p')
+            spaceships.forEach(spaceship => {
+                element.textContent = JSON.stringify(spaceship)
+                container.appendChild(element.cloneNode(true))
+            })
+        })
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="./style.css">
+    <link rel="stylesheet" type="text/css" href="/style/style.css">
 </head>
 <body>
     <nav>
@@ -13,7 +13,10 @@
                 <input class="codeship-token" type="hidden" name="token"/>
                 <input type="submit" value="user"/>
             </form>
-            <button id="spaceship">Update spaceship</button>
+            <form id="spaceship" action="/server/spaceship" method="POST">
+                <input class="codeship-token" type="hidden" name="token"/>
+                <input type="submit" value="spaceship"/>
+            </form>
             <form id="comment" action="/server/comment" method="POST">
                 <input class="codeship-token" type="hidden" name="token"/>
                 <input type="submit" value="Comment"/>
