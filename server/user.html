@@ -13,10 +13,22 @@
     <label for="user-id">Enter here the id of the user, or login to update/manage cart</label>
 
     <!-------------------------------USER CART----------------------------------->
-    <button id="show-cart">show cart</button>
-    <div id="cart"></div>
-    <input id="items" type="text" />Put the ids with a comma bettwen
-    <button id="add-items">Add items</button>
+    <fieldset>
+        <legend>Cart</legend>
+        <button id="show-cart">show cart</button>
+        <div id="cart"></div>
+        <input id="items" type="text" />Put the ids with a comma bettwen to add items to the cart
+        <button id="add-items">Add items</button>
+    </fieldset>
+    
+    <!-------------------------------USER ITEMS----------------------------------->
+    <fieldset>
+        <legend>Items</legend>
+        <button id="show-cart">show belong items</button>
+        <div id="belongs"></div>
+        <input id="products" type="text" />Put the ids with a comma bettwen to add items to the belongs
+        <button id="add-purchase">Add purchase</button>
+    </fieldset>
 
     <!-------------------------------USER UPDATE--------------------------------->
     
@@ -53,7 +65,7 @@
     <section id="updated"></section>
     <script>
         const token = sessionStorage.getItem('codeship-token')
-        const user_id = document.getElementById('user-id').value
+        const userIdElem = document.getElementById('user-id')
 
         fetch('/user/', {method:'GET', headers: {'x-access-token': token}})
         .then(res => res.json())
@@ -66,15 +78,30 @@
             })
         })
 
-        //-------------------------------CART-------------------------------------
-
-        document.getElementById('add-items').addEventListener('click', e => {
-            const url = user_id ? '/user/' + user_id : '/user/'
-            const body = {cart: document.getElementById('items').value.split(',')}
+        function propertyUpdate(property, inputId) {
+            const idsElem =  document.getElementById(inputId).value
+            const ids = idsElem ? idsElem.split(',') : []
+            const body = {}
+            body[property] = ids
+            const url = userIdElem.value ? '/user/' + userIdElem.value : '/user/'
             fetch(url, {method: 'PATCH', body: JSON.stringify(body), headers: {
                 'Content-Type': 'application/json', 'x-access-token': token
             }})
+        }
+
+        //-------------------------------CART-------------------------------------
+
+        document.getElementById('add-items').addEventListener('click', e => {
+            propertyUpdate('cart', 'items')
         })
+
+
+        //-------------------------------ITEMS-------------------------------------
+
+        document.getElementById('add-purchase').addEventListener('click', e => {
+            propertyUpdate('items', 'products')
+        })
+
 
         //--------------------------------UPDATE-----------------------------------
 
