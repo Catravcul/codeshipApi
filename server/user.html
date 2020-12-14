@@ -8,15 +8,21 @@
 </head>
 <body>
     <h1>users</h1>
-    <p id="users"></p>
+    <section id="users"></section>
+    <input id="user-id" type="text" placeholder="user id">
+    <label for="user-id">Enter here the id of the user, or login to update/manage cart</label>
+
+    <!-------------------------------USER CART----------------------------------->
+    <button id="show-cart">show cart</button>
+    <div id="cart"></div>
+    <input id="items" type="text" />Put the ids with a comma bettwen
+    <button id="add-items">Add items</button>
 
     <!-------------------------------USER UPDATE--------------------------------->
     
-    <input id="user-id" type="text" placeholder="user id">
-    <label for="user-id">Enter here the id of the user, or login to update</label>
     <form id="update">
         <fieldset>
-            <legend>New user</legend>
+            <legend>Update user</legend>
             <fieldset>
                 <input id="img" type="file" placeholder="img" name="img">
                 <label for="img"></label>
@@ -44,12 +50,31 @@
             <input type="submit" value="submit">
         </fieldset>
     </form>
-    <code id="updated"></code>
+    <section id="updated"></section>
     <script>
         const token = sessionStorage.getItem('codeship-token')
-        console.log(token)
+        const user_id = document.getElementById('user-id').value
+
         fetch('/user/', {method:'GET', headers: {'x-access-token': token}})
-        .then(res => res.json()).then( res => document.getElementById('users').textContent = JSON.stringify(res))
+        .then(res => res.json())
+        .then( ({data:{users}}) => {
+            const container = document.getElementById('users')
+            const pElem = document.createElement('p')
+            users.forEach(user => {
+                pElem.textContent = JSON.stringify(user)
+                container.appendChild(pElem.cloneNode(true))
+            })
+        })
+
+        //-------------------------------CART-------------------------------------
+
+        document.getElementById('add-items').addEventListener('click', e => {
+            const url = user_id ? '/user/' + user_id : '/user/'
+            const body = {cart: document.getElementById('items').value.split(',')}
+            fetch(url, {method: 'PATCH', body: JSON.stringify(body), headers: {
+                'Content-Type': 'application/json', 'x-access-token': token
+            }})
+        })
 
         //--------------------------------UPDATE-----------------------------------
 
@@ -58,7 +83,6 @@
 
         update.addEventListener('submit', e => {
             e.preventDefault()
-            const user_id = document.getElementById('user-id').value
             const url = user_id ? '/user/' + user_id : '/user/'
             const body = new FormData(update)
             fetch(url, {
