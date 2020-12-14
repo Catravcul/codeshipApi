@@ -56,16 +56,14 @@ const userSchema = new mongoose.Schema({
   cart: {
     type: Array,
     validate: {
-      validator: async function (ids) {
-        const Product = require('./productModel')
-        for (id of ids) {
-          const product = await Product.findById(id)
-          if (!product) {
-            return product
-          }
-        }
-        return true;
-      },
+      validator: validProducts,
+      message: 'Could not be found all the products.'
+    }
+  },
+  items: {
+    type: Array,
+    validate: {
+      validator: validProducts,
       message: 'Could not be found all the products.'
     }
   },
@@ -88,6 +86,17 @@ userSchema.pre('save', async function (next) {
 // this is a instance method which we can call from anywhere within our apps
 userSchema.methods.correctPassword =async function (candidatePassword,userPassword) {
   return await bcrypt.compare(candidatePassword,userPassword);
+}
+
+async function validProducts(ids) {
+  const Product = require('./productModel')
+  for (id of ids) {
+    const product = await Product.findById(id)
+    if (!product) {
+      return product
+    }
+  }
+  return true;
 }
 
 const User = mongoose.model('User', userSchema);
