@@ -39,13 +39,14 @@
                 body: JSON.stringify(body),
                 headers: {'Content-Type': 'application/json'}
             })
-            .then(response => response.json()).then(res => {
-                if(res.data){
-                    sessionStorage.setItem('codeship-token', res.data.token)
-                    token = res.data.token
-                    showIndex()
+            .then(response => response.json()).then(({data:{token, user}, message}) => {
+                if(message){
+                    document.getElementById('response').textContent = message
                 } else {
-                    document.getElementById('response').textContent = res.message
+                    sessionStorage.setItem('codeship-token', token)
+                    sessionStorage.setItem('codeship-session', JSON.stringify(user))
+                    token = token
+                    showIndex()
                 }
             })
         })
