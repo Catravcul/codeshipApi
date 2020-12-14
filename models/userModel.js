@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
         return el === this.password;
       },
       message: 'Password are not the same'
-    },
+    }
   },
   description: {
     type: String,
@@ -52,6 +52,22 @@ const userSchema = new mongoose.Schema({
   },
   img_path: {
     type: String
+  },
+  cart: {
+    type: Array,
+    validate: {
+      validator: async function (ids) {
+        const Product = require('./productModel')
+        for (id of ids) {
+          const product = await Product.findById(id)
+          if (!product) {
+            return product
+          }
+        }
+        return true;
+      },
+      message: 'Could not be found all the products.'
+    }
   },
   points: {
     type: Number,
