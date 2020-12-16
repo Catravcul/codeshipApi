@@ -141,3 +141,16 @@ exports.update = async (req, res) => {
     })
   }
 }
+
+exports.updateSession = (req, res) => {
+  try {
+    const user = User.findById(req.id)
+    res.status(200).json({
+      user: user
+    })
+  } catch (err) {
+    res.status(400).json({
+      err: err.message
+    })
+  }
+}
