@@ -46,19 +46,6 @@ app.use((req, res, next) => {
     })
   }
 })
-app.post('/test/token', (req, res, next) => {
-  if(req.body.serverId){
-    res.status(200).json({
-      status: 'OK',
-      data: {validToken: true},
-    })
-  } else {
-    res.status(300).json({
-      status: 'OK',
-      data: {validToken: false},
-    })
-  }
-})
 
 app.use('/server', serverPublicRoute)
 app.use('/public/user', userPublicRoute)
