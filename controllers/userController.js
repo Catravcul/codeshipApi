@@ -6,25 +6,21 @@ const signToken = (id) => {
   })
 }
 
-exports.index = async (req, res, next) => {
+exports.index = async (req, res) => {
   try {
     const users = await User.find()
 
     res.status(201).json({
-      status: 'success',
-      data: {
-        users: users,
-      }
+      users: users
     })
   } catch (err) {
     res.status(404).json({
-      status: 'error',
-      message: err.message,
+      err: err.message
     })
   }
 }
 
-exports.signup = async (req, res, next) => {
+exports.signup = async (req, res) => {
   try {
     let newUser
     if(req.files) {
@@ -39,21 +35,16 @@ exports.signup = async (req, res, next) => {
     const token = signToken(newUser._id)
 
     res.status(201).json({
-      status: 'success',
-      data: {
-        token: token,
-        user: newUser
-      }
+      user: newUser
     })
   } catch (err) {
     res.status(404).json({
-      status: 'error',
-      message: err.message,
+      err: err.message
     })
   }
 }
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
   try {
     const { username, password } = req.body;
     //   1) Checkif username and username exists
@@ -77,57 +68,45 @@ exports.login = async (req, res, next) => {
         expiresIn: process.env.JWT_EXPIRES_IN,
       })
     return res.status(200).json({
-      status: 'success',
-      data: {
-        token: token,
-        user: user
-      }
+      token: token,
+      user: user
     })
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message
+      err: err.message
     })
   }
 }
 
-exports.show = async (req, res, next) => {
+exports.show = async (req, res) => {
   try{
     const user = await User.findById(req.params.id)
     res.status(200).json({
-      status: 'OK',
-      data: {
-        user: user
-      }
+      user: user
     })
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message,
+      err: err.message
     })
   }
 }
 
-exports.drop = async (req, res, next) => {
+exports.drop = async (req, res) => {
   try{
     const result = await User.remove({}, err => {
       return err
     })
     res.status(200).json({
-      status: 'OK',
-      data: {
-        result: result
-      }
+      result: result
     })
   } catch(err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message,
+      err: err.message
     })
   }
 }
 
-exports.update = async (req, res, next) => {
+exports.update = async (req, res) => {
   try {
     const token = req.header('x-access-token')
     const id = req.params.id || jwt.verify(token, process.env.JWT_SECRET).id
@@ -154,15 +133,11 @@ exports.update = async (req, res, next) => {
     }
 
     res.status(200).json({
-      status: 'OK',
-      data: {
-        user: updated
-      }
+      user: updated
     })
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message,
+      err: err.message
     })
   }
 }

@@ -4,48 +4,40 @@ exports.index = async (req, res) => {
   try{
     const spaceships = await Spaceship.find()
     return res.status(200).json({
-      status: 'success',
-      data: { spaceships: spaceships },
+      spaceships: spaceships
     })
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message,
+      err: err.message
     })
   }
 }
 
-exports.store = async (req, res, next) => {
+exports.store = async (req, res) => {
   try {
     req.body.owner = req.id
     req.body.config_path = req.id + 'spaceship.js'
     req.body.components_path = req.id + 'components.js'
     const newSpaceship = await Spaceship.create(req.body)
     return res.status(200).json({
-      status: 'success',
-      data: { spaceship: newSpaceship },
+      spaceship: newSpaceship
     })
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message,
+      err: err.message
     })
   }
-
-  next();
 }
 
 exports.show = async (req, res, next) => {
   try {
     const spaceship = await Spaceship.findById(req.params.id)
     return res.status(200).json({
-      status: 'OK',
-      data: {spaceship: spaceship},
+      spaceship: spaceship
     })
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message,
+      err: err.message
     })
   }
 }
@@ -63,13 +55,11 @@ exports.update = async (req, res, next) => {
       )
     }
     res.status(200).json({
-      status: 'OK',
-      data: {spaceship: updated},
+      spaceship: updated
     })
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message,
+      err: err.message
     })
   }
 }
@@ -81,13 +71,11 @@ exports.drop = async (req, res, next) => {
       return err
     })
     res.status(200).json({
-      status: 'OK',
-      data: {result: result},
+      result: result
     })
   } catch(err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message,
+      err: err.message
     })
   }
 }

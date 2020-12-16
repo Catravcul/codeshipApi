@@ -4,13 +4,11 @@ exports.show = async (req, res, next) => {
     try {
       const products = await UserProduct.find({owner: req.params.userId})
       return res.status(200).json({
-        status: 'OK',
-        data: { products: products },
+        products: products
       })
     } catch (err) {
       res.status(404).json({
-        status: 'fail',
-        message: err.message,
+        err: err.message
       })
       next();
     }
@@ -21,13 +19,11 @@ exports.store = async (req, res, next) => {
     req.body.owner = req.id
     const newProduct = await UserProduct.create(req.body)
     return res.status(200).json({
-      status: 'success',
-      data: { product: newProduct },
+      product: newProduct
     })
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message,
+      err: err.message
     })
   }
 
@@ -41,13 +37,11 @@ exports.drop = async (req, res, next) => {
       return err
     })
     res.status(200).json({
-      status: 'OK',
-      data: {result: result},
+      result: result
     })
   } catch(err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message,
+      err: err.message
     })
   }
 }
