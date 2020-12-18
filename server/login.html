@@ -39,9 +39,9 @@
                 body: JSON.stringify(body),
                 headers: {'Content-Type': 'application/json'}
             })
-            .then(response => response.json()).then(({data:{token, user}, message}) => {
-                if(message){
-                    document.getElementById('response').textContent = message
+            .then(response => response.json()).then(({token, user, err}) => {
+                if(err){
+                    document.getElementById('response').textContent = err
                 } else {
                     sessionStorage.setItem('codeship-token', token)
                     sessionStorage.setItem('codeship-session', JSON.stringify(user))
@@ -52,13 +52,12 @@
         })
         showIndex()
         function showIndex() {
-            const body = {token: token}
-            fetch('/test/token', {
-                method: 'POST', 
-                body: JSON.stringify(body), 
-                headers:{'Content-Type': 'application/json'}})
-            .then( res => res.json() ).then( ({data}) => { 
-                if (data.validToken == true) {
+            fetch('/user', {
+                method: 'GET',
+                headers:{'x-access-token': token}})
+            .then( res => res.json() ).then( ({user}) => { 
+                if (user) {
+                    sessionStorage.setItem('codeship-session', JSON.stringify(user))
                     document.getElementById('get-index-form').submit()
                 }
             })
