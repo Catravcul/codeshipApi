@@ -142,9 +142,9 @@ exports.update = async (req, res) => {
   }
 }
 
-exports.updateSession = (req, res) => {
+exports.updateSession = async (req, res) => {
   try {
-    const user = User.findById(req.id)
+    const user = await User.findById(req.id)
     res.status(200).json({
       user: user
     })
