@@ -1,7 +1,7 @@
 import * as Components from './Components'
 
 export class Spaceship {
-    spaceship
+    spaceship = {}
     fuselage = new Components.F()
     takeoff = new Components.TO(this.fuselage.positionTO, this.fuselage.rotationTO, this.fuselage.scaleTO)
     propulsionEngine = new Components.PE(this.fuselage.positionPE, this.fuselage.rotationPE)
@@ -12,5 +12,4 @@ export class Spaceship {
         this.takeoff.renderOnGroup(this.spaceship)
         this.propulsionEngine.renderOnGroup(this.spaceship)
     }
-
 }
