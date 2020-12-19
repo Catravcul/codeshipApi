@@ -11,7 +11,17 @@ const productSchema = new mongoose.Schema({
     type: String,
     trim: true,
     maxlength: [25, 'A product must have a valid type'],
-    required: [true, 'A product must have a type.']
+    required: [true, 'A product must have a type.'],
+    validate: {
+      validator: (type) => {
+        const types = ['fuselage', 'propulsionEngine', 'takeoff']
+        if(types.findIndex(tipo => tipo === type) === -1){
+          return false
+        }
+        return true
+      },
+      message: 'Please enter an existing type'
+    }
   },
   description: {
     type: String,
@@ -31,11 +41,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A product must have a file path'],
     unique: [true, 'A product must have an unique file']
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now()
-  },
+  }
 });
 
 const Product = mongoose.model('Product', productSchema);
