@@ -33,15 +33,9 @@ const spaceshipSchema = new mongoose.Schema({
     trim: true,
     maxlength: [500, 'A goal reason must be less than 300 characters.']
   },
-  config_path: {
-    type: String,
-    required: [true, 'A spaceship must have a config file path'],
-    unique: [true, 'A spaceship must have an unique config file']
-  },
-  components_path: {
-    type: String,
-    required: [true, 'A spaceship must have a components file path'],
-    unique: [true, 'A spaceship must have an unique components file']
+  config: {
+    type: Object,
+    default: {fuselage: 'StandardF', propulsionEngine: 'StandardPE', takeoff: 'StandardTO'}
   }
 });
 
