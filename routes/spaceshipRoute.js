@@ -7,10 +7,13 @@ publicRouter.get('/:userId', show)
 
 router
   .route('/')
-  .get( index )
+  .get( show )
   .put( store )
   .delete( drop )
   .patch( update )
+
+router.get('/all', index)
+
 router
   .route('/:userId')
   .patch( update )
