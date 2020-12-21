@@ -12,7 +12,7 @@ const app = express()
 
 const cors = require('cors')
 require('dotenv').config()
-app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:5000'], methods:['POST', 'PUT', 'GET', 'PATCH', 'DELETE']}))
+app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:5000', 'https://codeship-game.herokuapp.com'], methods:['POST', 'PUT', 'GET', 'PATCH', 'DELETE']}))
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
