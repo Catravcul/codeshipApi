@@ -40,26 +40,24 @@
                 cache: 'no-store',
                 headers: {'Content-Type': 'application/json'}
             })
-            .then(response => response.json()).then(({token, user, err}) => {
+            .then(response => response.json()).then(({token, err}) => {
                 if(err){
                     document.getElementById('response').textContent = err
                 } else {
                     sessionStorage.setItem('codeship-token', token)
-                    sessionStorage.setItem('codeship-session', JSON.stringify(user))
-                    token = token
-                    showIndex()
+                    document.getElementById('codeship-token').value = token
+                    showIndex(token)
                 }
             })
         })
-        showIndex()
-        function showIndex() {
+        showIndex(token)
+        function showIndex(token) {
             fetch('/user', {
                 method: 'GET',
                 cache: 'no-store',
                 headers:{'x-access-token': token}})
             .then( res => res.json() ).then( ({user}) => { 
                 if (user) {
-                    sessionStorage.setItem('codeship-session', JSON.stringify(user))
                     document.getElementById('get-index-form').submit()
                 }
             })
