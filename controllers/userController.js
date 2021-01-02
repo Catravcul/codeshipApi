@@ -1,6 +1,11 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 
+const getToken = (user) => {
+  jwt.sign({ user }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  })
+}
 
 exports.index = async (req, res) => {
   try {
