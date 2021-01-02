@@ -63,10 +63,11 @@ app.use('/public/user_product', userProductPublicRoute)
 app.use((req, res, next) => {
   try {
     const token = req.header('x-access-token')
-    const {id, img_path} = jwt.verify(token, process.env.JWT_SECRET)
+    const {id, img_path, username} = jwt.verify(token, process.env.JWT_SECRET)
     if (id) {
       req.id = id,
       req.img_path = img_path
+      req.username = username
       next()
     } else {
       res.status(300).json({
@@ -89,6 +90,10 @@ app.use('/spaceship', spaceshipRoute)
 app.use('/user_product', userProductRoute)
 app.use('/comment', commentRoute)
 
+//Gets user data inside token
+app.get('/token/img_path', (req, res) => {
+  res.status(200).json({img_path: req.img_path})
+})
 
 app.all('*', (req, res, next) => {
   res.status(404).json({
