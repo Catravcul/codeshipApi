@@ -26,19 +26,7 @@ exports.signup = async (req, res) => {
   try {
 
     if (req.body.img_type) {
-      switch (req.body.img_type) {
-        case 'image/gif':
-          req.body.img_type = '.gif'
-          break
-        case 'image/jpeg':
-          req.body.img_type = '.jpeg'
-          break
-        case 'image/png':
-          req.body.img_type = '.png'
-          break
-          default :
-          req.body.img_type = '.null'
-      }
+      getExt(req)
       req.body.img_path = '/img/user/' + req.body.username + req.body.img_type
     }
     const newUser = await User.create(req.body)
@@ -114,6 +102,7 @@ exports.drop = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     if (req.body.img_type) {
+      getExt(req)
       req.body.img_path = '/img/user/' + req.username + req.body.img_type
     }
     
@@ -146,5 +135,25 @@ exports.updateSession = async (req, res) => {
     res.status(400).json({
       err: err.message
     })
+  }
+}
+
+/**
+ * set extention as string ".[ext]" to req.body.img_type
+ * @param {express.req} req 
+ */
+function getExt(req) {
+  switch (req.body.img_type) {
+    case 'image/gif':
+      req.body.img_type = '.gif'
+      break
+    case 'image/jpeg':
+      req.body.img_type = '.jpeg'
+      break
+    case 'image/png':
+      req.body.img_type = '.png'
+      break
+      default :
+      req.body.img_type = '.null'
   }
 }
