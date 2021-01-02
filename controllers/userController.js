@@ -24,7 +24,20 @@ exports.index = async (req, res) => {
 
 exports.signup = async (req, res) => {
   try {
-    req.body.img_path = 'img/user/' + req.body.username
+    switch (req.body.type) {
+      case 'image/gif':
+        req.body.type = '.gif'
+        break
+      case 'image/jpeg':
+        req.body.type = '.jpeg'
+        break
+      case 'image/png':
+        req.body.type = '.png'
+        break
+        default :
+        req.body.type = '.null'
+    }
+    req.body.img_path = '/img/user/' + req.body.username + req.body.type
     const newUser = await User.create(req.body)
 
     res.status(201).json({
