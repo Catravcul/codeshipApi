@@ -1,10 +1,6 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
-const signToken = (id) => {
-  jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  })
-}
+
 
 exports.index = async (req, res) => {
   try {
@@ -23,16 +19,8 @@ exports.index = async (req, res) => {
 exports.signup = async (req, res) => {
   try {
     let newUser
-    if(req.files) {
-      const img_path = 'img/user/' + Date.now() + req.files.img.name
-      req.body.img_path = img_path
-      newUser = await User.create(req.body)
-      req.files.img.mv('public/' + img_path, err => console.log(err))
-    }else {
-      req.body.img_path = 'img/user/profile.jpg'
-      newUser = await User.create(req.body)
-    }
-    const token = signToken(newUser._id)
+    req.body.img_path = 'img/user/' + req.body.username
+    newUser = await User.create(req.body)
 
     res.status(201).json({
       user: newUser
