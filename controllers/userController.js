@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 
 const getToken = (user) => {
-  jwt.sign({ user }, process.env.JWT_SECRET, {
+  const {id, img_path} = user
+  return jwt.sign({ id, img_path }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   })
 }
@@ -23,9 +24,8 @@ exports.index = async (req, res) => {
 
 exports.signup = async (req, res) => {
   try {
-    let newUser
     req.body.img_path = 'img/user/' + req.body.username
-    newUser = await User.create(req.body)
+    const newUser = await User.create(req.body)
 
     res.status(201).json({
       user: newUser
@@ -56,13 +56,9 @@ exports.login = async (req, res) => {
       })
     }
     // 3) If everything is correct ,send token to client
-    // const token = signToken (user._id)
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN,
-      })
     return res.status(200).json({
-      token: token,
-      user: user
+      token: getToken(user),
+      user
     })
   } catch (err) {
     res.status(400).json({
