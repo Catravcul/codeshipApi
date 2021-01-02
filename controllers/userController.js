@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 
 const getToken = (user) => {
-  const {id, img_path} = user
-  return jwt.sign({ id, img_path }, process.env.JWT_SECRET, {
+  const {id, img_path, username} = user
+  return jwt.sign({ id, img_path, username }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   })
 }
@@ -24,20 +24,23 @@ exports.index = async (req, res) => {
 
 exports.signup = async (req, res) => {
   try {
-    switch (req.body.type) {
-      case 'image/gif':
-        req.body.type = '.gif'
-        break
-      case 'image/jpeg':
-        req.body.type = '.jpeg'
-        break
-      case 'image/png':
-        req.body.type = '.png'
-        break
-        default :
-        req.body.type = '.null'
+
+    if (req.body.img_type) {
+      switch (req.body.img_type) {
+        case 'image/gif':
+          req.body.img_type = '.gif'
+          break
+        case 'image/jpeg':
+          req.body.img_type = '.jpeg'
+          break
+        case 'image/png':
+          req.body.img_type = '.png'
+          break
+          default :
+          req.body.img_type = '.null'
+      }
+      req.body.img_path = '/img/user/' + req.body.username + req.body.img_type
     }
-    req.body.img_path = '/img/user/' + req.body.username + req.body.type
     const newUser = await User.create(req.body)
 
     res.status(201).json({
@@ -94,7 +97,7 @@ exports.show = async (req, res) => {
 }
 
 exports.drop = async (req, res) => {
-  try{
+  try {
     const result = await User.remove({}, err => {
       return err
     })
@@ -110,10 +113,12 @@ exports.drop = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const token = req.header('x-access-token')
-    const id = req.params.id || jwt.verify(token, process.env.JWT_SECRET).id
+    if (req.body.img_type) {
+      req.body.img_path = '/img/user/' + req.username + req.body.img_type
+    }
+    
     const updated = await User.findByIdAndUpdate(
-      id,
+      req.id,
       req.body,
       {
         new: true,
@@ -121,19 +126,6 @@ exports.update = async (req, res) => {
       }
     )
     
-    if(req.files) {
-      let img_path = updated.img_path
-      if(img_path = 'public/user/profile.jpg'){
-        img_path = 'img/user/' + Date.now() + req.files.img.name
-      }
-      await User.findByIdAndUpdate(
-        req.params.id,
-        {img_path: img_path}
-      )
-      updated.img_path = img_path
-      req.files.img.mv('public/' + img_path, err => console.log(err))
-    }
-
     res.status(200).json({
       user: updated
     })
