@@ -51,7 +51,8 @@ const userSchema = new mongoose.Schema({
     maxlength: [250, 'A user description must be less than 250 characters.']
   },
   img_path: {
-    type: String
+    type: String,
+    default: '/img/user/profile.jpg'
   },
   cart: {
     type: Array,
