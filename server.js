@@ -2,6 +2,13 @@ const mongoose = require('mongoose')
 const app = require('./app')
 require('dotenv').config()
 
+const cors = require('cors')
+require('dotenv').config()
+app.use(cors({ 
+  origin: process.env.ALLOWED_URLS.split(','),
+  methods:['POST', 'PUT', 'GET', 'PATCH', 'DELETE']
+}))
+
 let DB = process.env.DATABASE_LOCAL
 if( process.env.NODE_ENV === 'production' ){
   DB = process.env.DATABASE.replace(
@@ -20,5 +27,5 @@ mongoose
   .catch((err) => console.log(err.message))
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
-  console.log(`http://127.0.0.1:${PORT}`)
+  console.log(`http://localhost:${PORT}`)
 })

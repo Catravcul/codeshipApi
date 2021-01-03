@@ -10,13 +10,6 @@ const {serverRoute, serverPublicRoute} = require('./routes/serverRoute')
 const jwt = require('jsonwebtoken')
 const app = express()
 
-const cors = require('cors')
-require('dotenv').config()
-app.use(cors({ 
-  origin: ['http://localhost:3000', 'https://codeship-game.herokuapp.com', 'https://codeship-net.herokuapp.com', 'https://codeship-fs.herokuapp.com'],
-  methods:['POST', 'PUT', 'GET', 'PATCH', 'DELETE']
-}))
-
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(express_fileupload({
