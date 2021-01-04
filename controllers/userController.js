@@ -102,10 +102,6 @@ exports.drop = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const {img_path, ...body} = req.body
-    if (body.img_type) {
-      const img_type = getExt(req)
-      body.img_path = '/img/user/' + req.username + img_type
-    }
     
     const updated = await User.findByIdAndUpdate(
       req.id,
@@ -116,41 +112,14 @@ exports.update = async (req, res) => {
       }
     )
 
-    if (body.img_type) {
-      if (process.env.NODE_ENV === 'development'){
-        var fsRes = await import('http').then(({get}) => dropImg(get, process.env.DEV_CODESHIP_FS_HOSTNAME, body.img_path))
-      } else {
-        var fsRes = await import('https').then(({get}) => dropImg(get, process.env.CODESHP_FS_HOSTNAME, body.img_path))
-      }
-    }
     res.status(200).json({
-      user: updated,
-      fsRes
+      user: updated
     })
 
   } catch (err) {
     res.status(400).json({
       err: err.message
     })
-  }
-
-  function dropImg(get, hostname, img_path) {
-    const options = {
-      hostname,
-      port: process.env.CODESHIP_FS_PORT,
-      path: '/',
-      method: 'DELETE',
-      headers: {'x-access-token': process.env.SECRET, img_path}
-    }
-    return new Promise((resolve, reject) => get(options, request => {
-      let response = ''
-      request.on('data', data => response += data)
-      request.on('end', () => {
-        const resObj = JSON.parse(response)
-        resolve(resObj)
-      })
-      request.on('error', err => reject(err))
-    }))
   }
 }
 
@@ -164,22 +133,5 @@ exports.updateSession = async (req, res) => {
     res.status(400).json({
       err: err.message
     })
-  }
-}
-
-/**
- * set extention as string ".[ext]" to req.body.img_type
- * @param {express.req} req 
- */
-function getExt(req) {
-  switch (req.body.img_type) {
-    case 'image/gif':
-      return '.gif'
-    case 'image/jpeg':
-      return '.jpeg'
-    case 'image/png':
-      return '.png'
-      default :
-      return '.null'
   }
 }
