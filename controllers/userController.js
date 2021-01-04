@@ -101,27 +101,56 @@ exports.drop = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    if (req.body.img_type) {
-      getExt(req)
-      req.body.img_path = '/img/user/' + req.username + req.body.img_type
+    const {img_path, ...body} = req.body
+    if (body.img_type) {
+      const img_type = getExt(req)
+      body.img_path = '/img/user/' + req.username + img_type
     }
     
     const updated = await User.findByIdAndUpdate(
       req.id,
-      req.body,
+      body,
       {
         new: true,
         runValidators: true,
       }
     )
-    
+
+    if (body.img_type) {
+      if (process.env.NODE_ENV === 'development'){
+        var fsRes = await import('http').then(({get}) => dropImg(get, process.env.DEV_CODESHIP_FS_HOSTNAME, body.img_path))
+      } else {
+        var fsRes = await import('https').then(({get}) => dropImg(get, process.env.CODESHP_FS_HOSTNAME, body.img_path))
+      }
+    }
     res.status(200).json({
-      user: updated
+      user: updated,
+      fsRes
     })
+
   } catch (err) {
     res.status(400).json({
       err: err.message
     })
+  }
+
+  function dropImg(get, hostname, img_path) {
+    const options = {
+      hostname,
+      port: process.env.CODESHIP_FS_PORT,
+      path: '/',
+      method: 'DELETE',
+      headers: {'x-access-token': process.env.SECRET, img_path}
+    }
+    return new Promise((resolve, reject) => get(options, request => {
+      let response = ''
+      request.on('data', data => response += data)
+      request.on('end', () => {
+        const resObj = JSON.parse(response)
+        resolve(resObj)
+      })
+      request.on('error', err => reject(err))
+    }))
   }
 }
 
@@ -145,15 +174,12 @@ exports.updateSession = async (req, res) => {
 function getExt(req) {
   switch (req.body.img_type) {
     case 'image/gif':
-      req.body.img_type = '.gif'
-      break
+      return '.gif'
     case 'image/jpeg':
-      req.body.img_type = '.jpeg'
-      break
+      return '.jpeg'
     case 'image/png':
-      req.body.img_type = '.png'
-      break
+      return '.png'
       default :
-      req.body.img_type = '.null'
+      return '.null'
   }
 }
