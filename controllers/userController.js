@@ -25,13 +25,11 @@ exports.index = async (req, res) => {
 exports.signup = async (req, res) => {
   try {
 
-    if (req.body.img_type) {
-      getExt(req)
-      req.body.img_path = '/img/user/' + req.body.username + req.body.img_type
-    }
-    const newUser = await User.create(req.body)
+    const {img_path, ...body} = req.body
+    const newUser = await User.create(body)
 
     res.status(201).json({
+      token: getToken(newUser),
       user: newUser
     })
   } catch (err) {
