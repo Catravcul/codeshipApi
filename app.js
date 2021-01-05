@@ -8,13 +8,14 @@ const {userProductRoute, userProductPublicRoute} = require('./routes/userProduct
 const {commentRoute, commentPublicRoute} = require('./routes/commentRoute')
 const {serverRoute, serverPublicRoute} = require('./routes/serverRoute')
 const jwt = require('jsonwebtoken')
-const app = express()
+const app = express.Router()
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(express_fileupload({
   useTempFiles: true,
-  tempFileDir: '/tmp/'
+  tempFileDir: '/tmp/',
+  limits: {fileSize: 0},
 }))
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
