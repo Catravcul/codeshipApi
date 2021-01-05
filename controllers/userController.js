@@ -47,16 +47,14 @@ exports.login = async (req, res) => {
     //   1) Checkif username and username exists
     if (!username || !password) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Your username and password do not match',
+        err: 'Your username and password do not match',
       })
     }
     // 2) Check if user exists && password is correct
     const user = await User.findOne({username }).select('+password');
     if (!user || !(await user.correctPassword(password, user.password))) {
       return res.status(401).json({
-        status: 'error',
-        message: 'Incorrect username or password',
+        err: 'Incorrect username or password',
       })
     }
     // 3) If everything is correct ,send token to client
