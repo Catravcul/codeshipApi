@@ -1,10 +1,12 @@
 const mongoose = require('mongoose')
+const express = require('express')
+const route = express()
 const app = require('./app')
 require('dotenv').config()
 
 const cors = require('cors')
 require('dotenv').config()
-app.use(cors({ 
+route.use(cors({ 
   origin: process.env.ALLOWED_URLS.split(','),
   methods:['POST', 'PUT', 'GET', 'PATCH', 'DELETE']
 }))
@@ -26,6 +28,7 @@ mongoose
   .then(() => console.log('connection successfull'))
   .catch((err) => console.log(err.message))
 const PORT = process.env.PORT || 5000
-app.listen(PORT, () => {
+route.use('/', app)
+route.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`)
 })
